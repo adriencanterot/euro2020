@@ -1,65 +1,123 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from "next/head";
+import { Container, Heading } from "@chakra-ui/react";
+import axios from "axios";
+import {
+	Table,
+	Thead,
+	Tbody,
+	Tfoot,
+	Tr,
+	Th,
+	Td,
+	TableCaption,
+} from "@chakra-ui/react";
+import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+import Picker from "../components/picker";
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+const setPicked = (game, participant, betStatus) => {
+	axios.post("/api/bet", {
+		game,
+		participant,
+		betStatus: betStatus,
+	});
+};
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+export default function Home({ games, participants }) {
+	console.log(participants);
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+	return (
+		<Container maxW="container.xl">
+			<Heading as="h1">Liste des Match</Heading>
+			<Table variant="simple">
+				<TableCaption>1er Tour</TableCaption>
+				<Thead>
+					<Tr>
+						<Th>Date</Th>
+						<Th>Pays</Th>
+						<Th>G</Th>
+						<Th>Nul </Th>
+						<Th isNumeric>G</Th>
+						<Th isNumeric>Pays</Th>
+					</Tr>
+				</Thead>
+				<Tbody>
+					{games.map((game) => (
+						<Tr>
+							<Td>date</Td>
+							<Td>{game.right.name}</Td>
+							<Td>
+								<Picker
+									participants={participants}
+									value="Left"
+									game={game}
+									setPicked={setPicked}
+								/>
+							</Td>
+							<Td>
+								{" "}
+								<Picker
+									participants={participants}
+									value="Nil"
+									game={game}
+									setPicked={setPicked}
+								/>
+							</Td>
+							<Td>
+								{" "}
+								<Picker
+									participants={participants}
+									value="Right"
+									game={game}
+									setPicked={setPicked}
+								/>
+							</Td>
+							<Td>{game.left.name}</Td>
+						</Tr>
+					))}
+				</Tbody>
+			</Table>
+		</Container>
+	);
+}
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+export async function getServerSideProps(props) {
+	const client = new ApolloClient({
+		cache: new InMemoryCache(),
+		uri: "http://localhost:1337/graphql",
+	});
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+	const response = await client.query({
+		query: gql`
+			query GetParticipants {
+				games {
+					left {
+						name
+					}
+					right {
+						name
+					}
+					bets {
+						participant {
+							name
+							initials
+						}
+						betStatus
+					}
+				}
+				participants {
+					name
+					initials
+				}
+			}
+		`,
+	});
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+	const { games, participants } = response.data;
+	return {
+		props: {
+			games,
+			participants,
+		},
+	};
 }
