@@ -12,6 +12,7 @@ import {
 	Td,
 	TableCaption,
 } from "@chakra-ui/react";
+import { Box, Badge, Center } from "@chakra-ui/react";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 
 import Picker from "../components/picker";
@@ -63,11 +64,10 @@ export default function Home() {
 				<title>Euro 2020</title>
 			</Head>
 			<Heading as="h1">Liste des Match</Heading>
-			<Table variant="simple">
+			<Table variant="unstyled">
 				<TableCaption>1er Tour</TableCaption>
 				<Thead>
 					<Tr>
-						<Th>Date</Th>
 						<Th>Pays</Th>
 						<Th>G</Th>
 						<Th>Nul </Th>
@@ -77,43 +77,91 @@ export default function Home() {
 				</Thead>
 				<Tbody>
 					{games.map((game) => (
-						<Tr
-							bg={
-								isToday(new Date(game.datetime))
-									? "green.50"
-									: ""
-							}
-						>
-							<Td>{showDate(game.datetime)}</Td>
-							<Td>{game.left.name}</Td>
-							<Td>
-								<Picker
-									participants={participants}
-									value="Left"
-									game={game}
-									setPicked={setPicked}
-								/>
-							</Td>
-							<Td>
-								{" "}
-								<Picker
-									participants={participants}
-									value="Nil"
-									game={game}
-									setPicked={setPicked}
-								/>
-							</Td>
-							<Td>
-								{" "}
-								<Picker
-									participants={participants}
-									value="Right"
-									game={game}
-									setPicked={setPicked}
-								/>
-							</Td>
-							<Td>{game.right.name}</Td>
-						</Tr>
+						<>
+							<Tr>
+								<Td></Td>
+								<Td></Td>
+								<Td>
+									{game.left_score && (
+										<Center>
+											<Badge
+												fontSize="lg"
+												mb={-6}
+												colorScheme="green"
+												alignContent="center"
+											>
+												{game.left_score} -{" "}
+												{game.right_score}
+											</Badge>
+										</Center>
+									)}
+									{game.left_score && (
+										<Center>
+											<Badge
+												fontSize="lg"
+												mb={-6}
+												colorScheme="green"
+												alignContent="center"
+											>
+												{game.left_score} -{" "}
+												{game.right_score}
+											</Badge>
+										</Center>
+									)}
+									{!game.left_score && (
+										<Center>
+											<Badge
+												fontSize="xs"
+												mb={-6}
+												colorScheme="orange"
+												alignContent="center"
+											>
+												{isToday(
+													new Date(game.datetime)
+												) && "Aujourd'hui"}
+												{!isToday(
+													new Date(game.datetime)
+												) &&
+													showDate(
+														new Date(game.datetime)
+													)}
+											</Badge>
+										</Center>
+									)}
+								</Td>
+							</Tr>
+							<Tr>
+								<Td>{game.left.name}</Td>
+								<Td>
+									<Picker
+										participants={participants}
+										value="Left"
+										game={game}
+										setPicked={setPicked}
+									/>
+								</Td>
+
+								<Td>
+									{" "}
+									<Picker
+										participants={participants}
+										value="Nil"
+										game={game}
+										setPicked={setPicked}
+									/>
+								</Td>
+								<Td>
+									{" "}
+									<Picker
+										participants={participants}
+										value="Right"
+										game={game}
+										setPicked={setPicked}
+									/>
+								</Td>
+								<Td>{game.right.name}</Td>
+							</Tr>
+						</>
 					))}
 				</Tbody>
 			</Table>

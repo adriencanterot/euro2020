@@ -27,6 +27,8 @@ export default async (req, res) => {
 						name
 					}
 					datetime
+					left_score
+					right_score
 					bets {
 						participant {
 							name

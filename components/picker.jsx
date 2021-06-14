@@ -35,9 +35,12 @@ export function Picker({ game, participants, value, setPicked }) {
 	return (
 		<Flex>
 			<Menu>
-				<MenuButton as={Button} size="sm">
-					+
-				</MenuButton>
+				{new Date(game.datetime) > Date.now() && (
+					<MenuButton as={Button} size="sm">
+						{" "}
+						+{" "}
+					</MenuButton>
+				)}
 				<MenuList>
 					{participants.map((participant) => (
 						<MenuItem
