@@ -39,7 +39,7 @@ function StatusBadge(props) {
 	const { game } = props;
 	return (
 		<>
-			{game.left_score && (
+			{game.left_score != undefined && (
 				<Center>
 					<Badge
 						fontSize="lg"
@@ -50,7 +50,7 @@ function StatusBadge(props) {
 					</Badge>
 				</Center>
 			)}
-			{!game.left_score && (
+			{game.left_score == undefined && (
 				<Center>
 					<Badge
 						fontSize="xs"
