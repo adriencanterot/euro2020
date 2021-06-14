@@ -82,15 +82,17 @@ export default function Home({ games, participants }) {
 }
 
 export async function getServerSideProps(props) {
+	const uri = process.env.STRAPI_CLIENT;
 	const client = new ApolloClient({
 		cache: new InMemoryCache(),
-		uri: "http://localhost:1337/graphql",
+		uri: uri + "/graphql",
 	});
 
 	const response = await client.query({
 		query: gql`
 			query GetParticipants {
 				games {
+					id
 					left {
 						name
 					}
@@ -101,6 +103,7 @@ export async function getServerSideProps(props) {
 						participant {
 							name
 							initials
+							id
 						}
 						betStatus
 					}
@@ -108,6 +111,7 @@ export async function getServerSideProps(props) {
 				participants {
 					name
 					initials
+					id
 				}
 			}
 		`,

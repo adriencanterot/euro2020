@@ -1,10 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { gql, ApolloClient, InMemoryCache } from "@apollo/client";
-
+import axios from "axios";
+import path from "path";
 const client = new ApolloClient({
 	cache: new InMemoryCache(),
-	uri: "http://localhost:1337/graphql",
+	uri: path.join(process.env.STRAPI_CLIENT, "/graphql"),
 });
 
 const mutation = gql`
@@ -30,19 +31,18 @@ const mutation = gql`
 `;
 
 export default async (req, res) => {
-	console.log(req.body);
+	console.log(process.env.NODE_ENV);
+	const uri = process.env.STRAPI_CLIENT;
 
 	const { game, participant, betStatus } = req.body;
 
-	const response = await client.mutate({
-		mutation,
-		variables: { game, participant, betStatus },
-		errorPolicy: "all",
+	const response = await axios.post(uri + "/bets", {
+		game: game.id,
+		participant: participant.id,
+		betStatus,
 	});
-
-	console.log("okay");
-	console.log(response);
 
 	res.statusCode = 200;
 	res.json = { status: "success!" };
+	return res;
 };
