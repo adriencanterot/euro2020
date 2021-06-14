@@ -1,0 +1,15 @@
+mutation AddBet($game: ID, $participant: ID, $betStatus: ENUM_BETS_BETSTATUS) {
+	createBet(
+		input: {
+			data: {
+				betStatus: $betStatus
+				participant: $participant
+				game: $game
+			}
+		}
+	) {
+		bet {
+			betStatus
+		}
+	}
+}
