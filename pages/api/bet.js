@@ -31,7 +31,6 @@ const mutation = gql`
 `;
 
 export default async (req, res) => {
-	console.log(process.env.NODE_ENV);
 	const uri = process.env.STRAPI_CLIENT;
 
 	const { game, participant, betStatus } = req.body;
@@ -44,5 +43,5 @@ export default async (req, res) => {
 
 	res.statusCode = 200;
 	res.json = { status: "success!" };
-	return res;
+	res.redirect("/");
 };
