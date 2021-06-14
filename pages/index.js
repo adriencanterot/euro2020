@@ -27,6 +27,15 @@ function showDate(dateString) {
 	return date.toLocaleDateString("fr-FR", options);
 }
 
+function isToday(someDate) {
+	const today = new Date();
+	return (
+		someDate.getDate() == today.getDate() &&
+		someDate.getMonth() == today.getMonth() &&
+		someDate.getFullYear() == today.getFullYear()
+	);
+}
+
 const setPicked = async (game, participant, betStatus) => {
 	const response = await axios.post("/api/bet", {
 		game,
@@ -68,7 +77,13 @@ export default function Home() {
 				</Thead>
 				<Tbody>
 					{games.map((game) => (
-						<Tr>
+						<Tr
+							bg={
+								isToday(new Date(game.datetime))
+									? "green.50"
+									: ""
+							}
+						>
 							<Td>{showDate(game.datetime)}</Td>
 							<Td>{game.left.name}</Td>
 							<Td>
