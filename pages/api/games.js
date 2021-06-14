@@ -18,7 +18,7 @@ export default async (req, res) => {
 	const response = await client.query({
 		query: gql`
 			query GetParticipants {
-				games {
+				games(sort: "datetime:DESC") {
 					id
 					left {
 						name
