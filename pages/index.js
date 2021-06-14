@@ -28,6 +28,9 @@ export default function Home({ games, participants }) {
 
 	return (
 		<Container maxW="container.xl">
+			<Head>
+				<title>Euro 2020</title>
+			</Head>
 			<Heading as="h1">Liste des Match</Heading>
 			<Table variant="simple">
 				<TableCaption>1er Tour</TableCaption>
@@ -45,7 +48,7 @@ export default function Home({ games, participants }) {
 					{games.map((game) => (
 						<Tr>
 							<Td>date</Td>
-							<Td>{game.right.name}</Td>
+							<Td>{game.left.name}</Td>
 							<Td>
 								<Picker
 									participants={participants}
@@ -72,7 +75,7 @@ export default function Home({ games, participants }) {
 									setPicked={setPicked}
 								/>
 							</Td>
-							<Td>{game.left.name}</Td>
+							<Td>{game.right.name}</Td>
 						</Tr>
 					))}
 				</Tbody>
@@ -85,12 +88,10 @@ export async function getServerSideProps(props) {
 	const uri = process.env.STRAPI_CLIENT;
 	const client = new ApolloClient({
 		cache: new InMemoryCache(),
-		uri: "https://infinite-ridge-54689.herokuapp.com/graphql",
+		uri: new URL("graphql", uri),
 	});
 
-	const axiosresp = await axios.get(
-		"https://infinite-ridge-54689.herokuapp.com/participants"
-	);
+	const axiosresp = await axios.get(new URL("participants", uri).toString());
 	console.log(axiosresp);
 
 	const response = await client.query({
