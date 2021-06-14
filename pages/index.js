@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Container, Heading } from "@chakra-ui/react";
-import axios from "axios";
 import useSWR, { mutate } from "swr";
+import axios from "axios";
 import {
 	Table,
 	Thead,
@@ -13,7 +13,6 @@ import {
 	TableCaption,
 } from "@chakra-ui/react";
 import { Box, Badge, Center, Divider } from "@chakra-ui/react";
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 
 function showDate(dateString) {
 	const date = new Date(dateString);
@@ -80,8 +79,8 @@ const setPicked = async (game, participant, betStatus) => {
 	}
 };
 
-export default function Home() {
-	const { data, error } = useSWR("/api/games", axios);
+export default function Home(props) {
+	const { data, error } = useSWR("/api/games", axios, { initialData: props });
 	if (error) {
 		return <div>An error occured while fetching</div>;
 	}
@@ -151,4 +150,13 @@ export default function Home() {
 			</Table>
 		</Container>
 	);
+}
+
+import { getInitialState } from "../lib/graphql";
+
+export async function getServerSideProps(context) {
+	const response = await getInitialState();
+	return {
+		props: response,
+	};
 }
