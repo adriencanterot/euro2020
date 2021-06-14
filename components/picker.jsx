@@ -12,25 +12,32 @@ import {
 	MenuDivider,
 } from "@chakra-ui/react";
 
+import { Flex, Spacer } from "@chakra-ui/react";
+import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
+
 function checkBet(bets, value) {
 	const filtered = bets.filter((bet) => bet.betStatus === value);
 	if (filtered.length > 0) {
 		return (
-			<ul>
+			<AvatarGroup size="sm" spacing="-2.5" colorScheme="teal">
 				{filtered.map((bet) => (
-					<li>{bet.participant.initials}</li>
+					<Avatar
+						name={bet.participant.initials}
+						getInitials={(s) => s}
+					/>
 				))}
-			</ul>
+			</AvatarGroup>
 		);
 	}
 }
 
 export function Picker({ game, participants, value, setPicked }) {
 	return (
-		<>
-			{game.bets && checkBet(game.bets, value)}
+		<Flex>
 			<Menu>
-				<MenuButton as={Button}>+</MenuButton>
+				<MenuButton as={Button} size="sm">
+					+
+				</MenuButton>
 				<MenuList>
 					{participants.map((participant) => (
 						<MenuItem
@@ -41,7 +48,9 @@ export function Picker({ game, participants, value, setPicked }) {
 					))}
 				</MenuList>
 			</Menu>
-		</>
+			<Spacer />
+			{game.bets && checkBet(game.bets, value)}
+		</Flex>
 	);
 }
 
