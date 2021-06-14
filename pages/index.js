@@ -85,8 +85,13 @@ export async function getServerSideProps(props) {
 	const uri = process.env.STRAPI_CLIENT;
 	const client = new ApolloClient({
 		cache: new InMemoryCache(),
-		uri: uri + "/graphql",
+		uri: "https://infinite-ridge-54689.herokuapp.com/graphql",
 	});
+
+	const axiosresp = await axios.get(
+		"https://infinite-ridge-54689.herokuapp.com/participants"
+	);
+	console.log(axiosresp);
 
 	const response = await client.query({
 		query: gql`

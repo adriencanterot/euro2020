@@ -36,11 +36,14 @@ export default async (req, res) => {
 
 	const { game, participant, betStatus } = req.body;
 
-	const response = await axios.post(uri + "/bets", {
-		game: game.id,
-		participant: participant.id,
-		betStatus,
-	});
+	const response = await axios.post(
+		"https://infinite-ridge-54689.herokuapp.com/bets",
+		{
+			game: game.id,
+			participant: participant.id,
+			betStatus,
+		}
+	);
 
 	res.statusCode = 200;
 	res.json = { status: "success!" };
