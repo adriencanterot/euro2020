@@ -12,10 +12,8 @@ import {
 	Td,
 	TableCaption,
 } from "@chakra-ui/react";
-import { Box, Badge, Center } from "@chakra-ui/react";
+import { Box, Badge, Center, Divider } from "@chakra-ui/react";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-
-import Picker from "../components/picker";
 
 function showDate(dateString) {
 	const date = new Date(dateString);
@@ -36,6 +34,40 @@ function isToday(someDate) {
 		someDate.getFullYear() == today.getFullYear()
 	);
 }
+
+function StatusBadge(props) {
+	const { game } = props;
+	return (
+		<>
+			{game.left_score && (
+				<Center>
+					<Badge
+						fontSize="lg"
+						colorScheme="green"
+						alignContent="center"
+					>
+						{game.left_score} - {game.right_score}
+					</Badge>
+				</Center>
+			)}
+			{!game.left_score && (
+				<Center>
+					<Badge
+						fontSize="xs"
+						colorScheme="orange"
+						alignContent="center"
+					>
+						{isToday(new Date(game.datetime)) && "Aujourd'hui"}
+						{!isToday(new Date(game.datetime)) &&
+							showDate(new Date(game.datetime))}
+					</Badge>
+				</Center>
+			)}
+		</>
+	);
+}
+
+import Picker from "../components/picker";
 
 const setPicked = async (game, participant, betStatus) => {
 	const response = await axios.post("/api/bet", {
@@ -64,104 +96,56 @@ export default function Home() {
 				<title>Euro 2020</title>
 			</Head>
 			<Heading as="h1">Liste des Match</Heading>
-			<Table variant="unstyled">
+			<Table variant="simple">
 				<TableCaption>1er Tour</TableCaption>
 				<Thead>
 					<Tr>
 						<Th>Pays</Th>
+						<Th>Statut</Th>
+						<Th isNumeric>Pays</Th>
 						<Th>G</Th>
 						<Th>Nul </Th>
 						<Th isNumeric>G</Th>
-						<Th isNumeric>Pays</Th>
 					</Tr>
 				</Thead>
 				<Tbody>
 					{games.map((game) => (
-						<>
-							<Tr>
-								<Td></Td>
-								<Td></Td>
-								<Td>
-									{game.left_score && (
-										<Center>
-											<Badge
-												fontSize="lg"
-												mb={-6}
-												colorScheme="green"
-												alignContent="center"
-											>
-												{game.left_score} -{" "}
-												{game.right_score}
-											</Badge>
-										</Center>
-									)}
-									{game.left_score && (
-										<Center>
-											<Badge
-												fontSize="lg"
-												mb={-6}
-												colorScheme="green"
-												alignContent="center"
-											>
-												{game.left_score} -{" "}
-												{game.right_score}
-											</Badge>
-										</Center>
-									)}
-									{!game.left_score && (
-										<Center>
-											<Badge
-												fontSize="xs"
-												mb={-6}
-												colorScheme="orange"
-												alignContent="center"
-											>
-												{isToday(
-													new Date(game.datetime)
-												) && "Aujourd'hui"}
-												{!isToday(
-													new Date(game.datetime)
-												) &&
-													showDate(
-														new Date(game.datetime)
-													)}
-											</Badge>
-										</Center>
-									)}
-								</Td>
-							</Tr>
-							<Tr>
-								<Td>{game.left.name}</Td>
-								<Td>
-									<Picker
-										participants={participants}
-										value="Left"
-										game={game}
-										setPicked={setPicked}
-									/>
-								</Td>
+						<Tr>
+							<Td>{game.left.name}</Td>
+							<Td>
+								<StatusBadge game={game} />
+							</Td>
+							<Td isNumeric textAlign="right">
+								{game.right.name}
+							</Td>
+							<Td>
+								<Picker
+									participants={participants}
+									value="Left"
+									game={game}
+									setPicked={setPicked}
+								/>
+							</Td>
 
-								<Td>
-									{" "}
-									<Picker
-										participants={participants}
-										value="Nil"
-										game={game}
-										setPicked={setPicked}
-									/>
-								</Td>
-								<Td>
-									{" "}
-									<Picker
-										participants={participants}
-										value="Right"
-										game={game}
-										setPicked={setPicked}
-									/>
-								</Td>
-								<Td>{game.right.name}</Td>
-							</Tr>
-						</>
+							<Td>
+								{" "}
+								<Picker
+									participants={participants}
+									value="Nil"
+									game={game}
+									setPicked={setPicked}
+								/>
+							</Td>
+							<Td>
+								{" "}
+								<Picker
+									participants={participants}
+									value="Right"
+									game={game}
+									setPicked={setPicked}
+								/>
+							</Td>
+						</Tr>
 					))}
 				</Tbody>
 			</Table>
