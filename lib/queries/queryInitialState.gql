@@ -1,0 +1,27 @@
+query GetInitialState {
+	games(sort: "datetime:DESC") {
+		id
+		left {
+			name
+		}
+		right {
+			name
+		}
+		datetime
+		left_score
+		right_score
+		bets {
+			participant {
+				name
+				initials
+				id
+			}
+			betStatus
+		}
+	}
+	participants {
+		name
+		initials
+		id
+	}
+}
