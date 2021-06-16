@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { createBet } from "../../lib/graphql";
+import { createBet, getInitialState } from "../../lib/graphql";
 
 export default async (req, res) => {
 	const uri = process.env.STRAPI_CLIENT;
@@ -7,7 +7,7 @@ export default async (req, res) => {
 	const { game, participant, betStatus } = req.body;
 
 	const response = await createBet(game, participant, betStatus);
-	console.log(response);
-
-	res.json(response.data);
+	if (response) {
+		res.json(response.data);
+	}
 };
