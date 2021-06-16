@@ -12,6 +12,10 @@ import {
 	MenuDivider,
 } from "@chakra-ui/react";
 
+import { Spinner } from "@chakra-ui/react";
+
+import { useState, useEffect } from "react";
+
 import { Flex, Spacer } from "@chakra-ui/react";
 import { Avatar, AvatarBadge, AvatarGroup } from "@chakra-ui/react";
 
@@ -33,19 +37,27 @@ function checkBet(bets, value) {
 }
 
 export function Picker({ game, participants, value, setPicked }) {
+	const [spinning, setSpinning] = useState(false);
+
+	useEffect(() => {
+		setSpinning(false);
+	}, [game.bets.length]);
+
 	return (
 		<Flex>
 			<Menu>
 				{new Date(game.datetime) > Date.now() && (
 					<MenuButton as={Button} size="sm">
-						{" "}
-						+{" "}
+						{spinning ? <Spinner size="xs" /> : "+"}
 					</MenuButton>
 				)}
 				<MenuList>
 					{participants.map((participant) => (
 						<MenuItem
-							onClick={() => setPicked(game, participant, value)}
+							onClick={() => {
+								setSpinning(true);
+								setPicked(game, participant, value);
+							}}
 							key={participant.id}
 						>
 							{participant.name}
