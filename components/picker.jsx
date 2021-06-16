@@ -22,6 +22,7 @@ function checkBet(bets, value) {
 			<AvatarGroup size="sm" spacing="-2.5" colorScheme="teal">
 				{filtered.map((bet) => (
 					<Avatar
+						key={bet.id}
 						name={bet.participant.initials}
 						getInitials={(s) => s}
 					/>
@@ -45,13 +46,13 @@ export function Picker({ game, participants, value, setPicked }) {
 					{participants.map((participant) => (
 						<MenuItem
 							onClick={() => setPicked(game, participant, value)}
+							key={participant.id}
 						>
 							{participant.name}
 						</MenuItem>
 					))}
 				</MenuList>
 			</Menu>
-			<Spacer />
 			{game.bets && checkBet(game.bets, value)}
 		</Flex>
 	);
