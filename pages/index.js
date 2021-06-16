@@ -70,32 +70,41 @@ function StatusBadge(props) {
 import Picker from "../components/picker";
 
 export default function Home(props) {
-	const [state, setState] = useState(props.data);
+	const [games, setGames] = useState(props.data.games);
+	const [participants, setParticipants] = useState(props.data.participants);
 
-	const { games, participants } = state;
-
-	const setPicked = (game, participant, betStatus) => {
-		const filteredGame = games.filter((g) => g.id === game.id);
-		filteredGame[0].bets.push({
-			__typename: "Bets",
-			participant,
-			betStatus,
-		});
-		const oldGames = games.filter((g) => g.id !== game.id);
-		const newGames = [...filteredGame, ...oldGames].sort(
-			(g1, g2) =>
-				new Date(g2.datetime).getTime() >
-				new Date(g1.datetime).getTime()
-		);
-
-		setState({ games: newGames, participants });
-
-		const response = axios.post("/api/bet", {
+	const setPicked = async (game, participant, betStatus) => {
+		const response = await axios.post("/api/bet", {
 			game,
 			participant,
 			betStatus: betStatus,
 		});
+		const { bet } = response.data.createBet;
+		const newGames = games.map((g) => {
+			if (g.id === bet.game.id) {
+				g.bets.push(bet);
+			}
+			return g;
+		});
+		setGames(newGames);
 	};
+
+	// useEffect(() => {
+	// 	console.log(picked);
+	// 	if (Object.keys(picked).length !== 0) {
+	// 		const { game, participant, betStatus } = picked;
+	// 		(async (game, participant, betStatus) => {
+	// 			const response = await axios.post("/api/bet", {
+	// 				game,
+	// 				participant,
+	// 				betStatus: betStatus,
+	// 			});
+	// 			console.log(response.data);
+	// 			setState(response.data);
+	// 		})(game, participant, betStatus);
+	// 		setPicked({});
+	// 	}
+	// }, [picked]);
 
 	return (
 		<Container maxW="container.xl">
@@ -131,6 +140,7 @@ export default function Home(props) {
 									value="Left"
 									game={game}
 									setPicked={setPicked}
+									loading={false}
 								/>
 							</Td>
 
@@ -141,6 +151,7 @@ export default function Home(props) {
 									value="Nil"
 									game={game}
 									setPicked={setPicked}
+									loading={false}
 								/>
 							</Td>
 							<Td>
@@ -150,6 +161,7 @@ export default function Home(props) {
 									value="Right"
 									game={game}
 									setPicked={setPicked}
+									loading={false}
 								/>
 							</Td>
 						</Tr>
