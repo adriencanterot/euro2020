@@ -11,6 +11,7 @@ query GetInitialState {
 		left_score
 		right_score
 		bets {
+			id
 			participant {
 				name
 				initials
