@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Container, Heading } from "@chakra-ui/react";
 import useSWR, { mutate } from "swr";
 import axios from "axios";
+import { useState, useEffect } from "react";
 import {
 	Table,
 	Thead,
@@ -68,26 +69,31 @@ function StatusBadge(props) {
 
 import Picker from "../components/picker";
 
-const setPicked = async (game, participant, betStatus) => {
-	const response = await axios.post("/api/bet", {
-		game,
-		participant,
-		betStatus: betStatus,
-	});
-	if (response.status === 200) {
-		mutate("/api/games");
-	}
-};
-
 export default function Home(props) {
-	const { data, error } = useSWR("/api/games", axios, { initialData: props });
-	if (error) {
-		return <div>An error occured while fetching</div>;
-	}
-	if (!data) {
-		return <div>Loading...</div>;
-	}
-	const { games, participants } = data.data;
+	const [state, setState] = useState(props.data);
+
+	const { games, participants } = state;
+
+	const setPicked = (game, participant, betStatus) => {
+		const filteredGame = games.filter((g) => g.id === game.id);
+		filteredGame[0].bets.push({
+			__typename: "Bets",
+			participant,
+			betStatus,
+		});
+		const oldGames = games.filter((g) => g.id !== game.id);
+		const newGames = [...filteredGame, ...oldGames].sort(
+			(g1, g2) => new Date(g2.datetime) > new Date(g1.datetime)
+		);
+
+		setState({ games: newGames, participants });
+
+		const response = axios.post("/api/bet", {
+			game,
+			participant,
+			betStatus: betStatus,
+		});
+	};
 
 	return (
 		<Container maxW="container.xl">
@@ -109,7 +115,7 @@ export default function Home(props) {
 				</Thead>
 				<Tbody>
 					{games.map((game) => (
-						<Tr>
+						<Tr key={game.id}>
 							<Td>{game.left.name}</Td>
 							<Td>
 								<StatusBadge game={game} />
