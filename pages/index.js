@@ -83,7 +83,9 @@ export default function Home(props) {
 		});
 		const oldGames = games.filter((g) => g.id !== game.id);
 		const newGames = [...filteredGame, ...oldGames].sort(
-			(g1, g2) => new Date(g2.datetime) > new Date(g1.datetime)
+			(g1, g2) =>
+				new Date(g2.datetime).getTime() >
+				new Date(g1.datetime).getTime()
 		);
 
 		setState({ games: newGames, participants });
