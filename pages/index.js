@@ -13,7 +13,7 @@ import {
 	TableCaption,
 } from "@chakra-ui/react";
 import { Link as ChakraLink } from "@chakra-ui/react";
-import Picker from "../components/Picker";
+import Picker from "../components/picker";
 import StatusBadge from "../components/StatusBadge";
 
 export default function Home(props) {
