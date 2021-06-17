@@ -1,73 +1,20 @@
 import Head from "next/head";
-import { Container, Heading } from "@chakra-ui/react";
-import useSWR, { mutate } from "swr";
+import Link from "next/link";
+import { Container, Heading, Center, VStack } from "@chakra-ui/react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
 	Table,
 	Thead,
 	Tbody,
-	Tfoot,
 	Tr,
 	Th,
 	Td,
 	TableCaption,
 } from "@chakra-ui/react";
-import { Box, Badge, Center, Divider } from "@chakra-ui/react";
-
-function showDate(dateString) {
-	const date = new Date(dateString);
-	const options = {
-		weekday: "short",
-		month: "short",
-		day: "numeric",
-		hour: "numeric",
-	};
-	return date.toLocaleDateString("fr-FR", options);
-}
-
-function isToday(someDate) {
-	const today = new Date();
-	return (
-		someDate.getDate() == today.getDate() &&
-		someDate.getMonth() == today.getMonth() &&
-		someDate.getFullYear() == today.getFullYear()
-	);
-}
-
-function StatusBadge(props) {
-	const { game } = props;
-	return (
-		<>
-			{game.left_score != undefined && (
-				<Center>
-					<Badge
-						fontSize="lg"
-						colorScheme="green"
-						alignContent="center"
-					>
-						{game.left_score} - {game.right_score}
-					</Badge>
-				</Center>
-			)}
-			{game.left_score == undefined && (
-				<Center>
-					<Badge
-						fontSize="xs"
-						colorScheme="orange"
-						alignContent="center"
-					>
-						{isToday(new Date(game.datetime)) && "Aujourd'hui"}
-						{!isToday(new Date(game.datetime)) &&
-							showDate(new Date(game.datetime))}
-					</Badge>
-				</Center>
-			)}
-		</>
-	);
-}
-
-import Picker from "../components/picker";
+import { Link as ChakraLink } from "@chakra-ui/react";
+import Picker from "../components/Picker";
+import StatusBadge from "../components/StatusBadge";
 
 export default function Home(props) {
 	const [games, setGames] = useState(props.data.games);
@@ -89,29 +36,23 @@ export default function Home(props) {
 		setGames(newGames);
 	};
 
-	// useEffect(() => {
-	// 	console.log(picked);
-	// 	if (Object.keys(picked).length !== 0) {
-	// 		const { game, participant, betStatus } = picked;
-	// 		(async (game, participant, betStatus) => {
-	// 			const response = await axios.post("/api/bet", {
-	// 				game,
-	// 				participant,
-	// 				betStatus: betStatus,
-	// 			});
-	// 			console.log(response.data);
-	// 			setState(response.data);
-	// 		})(game, participant, betStatus);
-	// 		setPicked({});
-	// 	}
-	// }, [picked]);
-
 	return (
 		<Container maxW="container.xl">
 			<Head>
 				<title>Euro 2020</title>
 			</Head>
-			<Heading as="h1">Liste des Match</Heading>
+			<Center>
+				<Heading as="h1" m={2}>
+					Match
+				</Heading>
+			</Center>
+			<Center m={2}>
+				<Link href="/">Match</Link>
+				&nbsp;|&nbsp;
+				<Link href="/scores">
+					<ChakraLink>Scores</ChakraLink>
+				</Link>
+			</Center>
 			<Table variant="simple">
 				<TableCaption>1er Tour</TableCaption>
 				<Thead>
