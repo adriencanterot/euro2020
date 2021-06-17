@@ -74,17 +74,21 @@ export async function getServerSideProps(context) {
 		}
 		for (let bet of participant.bets) {
 			played += 1;
-			if (bet.game.left === undefined || bet.game.right === undefined) {
+			if (
+				bet.game.left_score === undefined ||
+				bet.game.right_score === undefined
+			) {
 				continue;
 			}
 			let gameStatus;
-			if (bet.game.left > bet.game.right) {
+			if (bet.game.left_score > bet.game.right_score) {
 				gameStatus = "Left";
-			} else if (bet.game.left < bet.game.right) {
+			} else if (bet.game.left_score < bet.game.right_score) {
 				gameStatus = "Right";
 			} else {
 				gameStatus = "Nil";
 			}
+
 			if (bet.betStatus === gameStatus) {
 				won += 1;
 			} else {
@@ -101,11 +105,10 @@ export async function getServerSideProps(context) {
 			...participant,
 		});
 	}
+	console.log(participantsWithScore);
 	const sortedParticipants = participantsWithScore.sort(
-		(p1, p2) => p1.won > p2.won
+		(p1, p2) => p2.won - p1.won
 	);
-
-	console.log(sortedParticipants);
 
 	return {
 		props: {
