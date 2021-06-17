@@ -1,0 +1,15 @@
+query GetParticipants {
+	participants {
+		name
+		initials
+		id
+		bets {
+			id
+			game {
+				left_score
+				right_score
+			}
+			betStatus
+		}
+	}
+}
