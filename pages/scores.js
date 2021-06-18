@@ -35,11 +35,11 @@ export default function Scores(props) {
 			<Table variant="simple">
 				<Thead>
 					<Tr>
-						<Th isNumeric>Participant</Th>
-						<Th>Paris Gagnés</Th>
-						<Th>Perdus</Th>
-						<Th>Joués</Th>
-						<Th>Ratio</Th>
+						<Th>Participant</Th>
+						<Th isNumeric>Paris Gagnés</Th>
+						<Th isNumeric>Perdus</Th>
+						<Th isNumeric>Joués</Th>
+						<Th isNumeric>Ratio</Th>
 					</Tr>
 				</Thead>
 				<Tbody>
@@ -74,10 +74,7 @@ export async function getServerSideProps(context) {
 		}
 		for (let bet of participant.bets) {
 			played += 1;
-			if (
-				bet.game.left_score === undefined ||
-				bet.game.right_score === undefined
-			) {
+			if (bet.game.left_score === null || bet.game.right_score === null) {
 				continue;
 			}
 			let gameStatus;
@@ -88,7 +85,7 @@ export async function getServerSideProps(context) {
 			} else {
 				gameStatus = "Nil";
 			}
-
+			console.log(bet.game.left_score);
 			if (bet.betStatus === gameStatus) {
 				won += 1;
 			} else {
