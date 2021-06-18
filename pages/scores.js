@@ -46,10 +46,10 @@ export default function Scores(props) {
 					{participants.map((participant, index) => (
 						<Tr bg={index === 0 ? "green.100" : ""}>
 							<Td>{participant.name}</Td>
-							<Td>{participant.won}</Td>
-							<Td>{participant.lost}</Td>
-							<Td>{participant.played}</Td>
-							<Td>{participant.ratio}</Td>
+							<Td isNumeric>{participant.won}</Td>
+							<Td isNumeric>{participant.lost}</Td>
+							<Td isNumeric>{participant.played}</Td>
+							<Td isNumeric>{participant.ratio.toFixed(2)}</Td>
 						</Tr>
 					))}
 				</Tbody>
