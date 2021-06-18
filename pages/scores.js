@@ -35,7 +35,7 @@ export default function Scores(props) {
 			<Table variant="simple">
 				<Thead>
 					<Tr>
-						<Th>Participant</Th>
+						<Th isNumeric>Participant</Th>
 						<Th>Paris Gagnés</Th>
 						<Th>Perdus</Th>
 						<Th>Joués</Th>
@@ -95,7 +95,7 @@ export async function getServerSideProps(context) {
 				lost += 1;
 			}
 		}
-		const ratio = played === 0 ? won / played : 0;
+		const ratio = played !== 0 ? won / (won + lost) : 0;
 
 		participantsWithScore.push({
 			won,
@@ -105,9 +105,8 @@ export async function getServerSideProps(context) {
 			...participant,
 		});
 	}
-	console.log(participantsWithScore);
 	const sortedParticipants = participantsWithScore.sort(
-		(p1, p2) => p2.won - p1.won
+		(p1, p2) => p2.ratio / p1.ratio - 1
 	);
 
 	return {
