@@ -35,6 +35,7 @@ function StatusBadge(props) {
 						fontSize="lg"
 						colorScheme="green"
 						alignContent="center"
+						m={2}
 					>
 						{game.left_score} - {game.right_score}
 					</Badge>
@@ -46,6 +47,7 @@ function StatusBadge(props) {
 						fontSize="xs"
 						colorScheme="orange"
 						alignContent="center"
+						m={2}
 					>
 						{isToday(new Date(game.datetime)) &&
 							"Aujourd'hui à " + showTime(game.datetime)}
