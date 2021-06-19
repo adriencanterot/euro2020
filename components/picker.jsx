@@ -36,7 +36,13 @@ function checkBet(bets, value) {
 	}
 }
 
-export function Picker({ game, participants, value, setPicked }) {
+export function Picker({
+	game,
+	participants,
+	value,
+	setPicked,
+	direction = "row",
+}) {
 	const [spinning, setSpinning] = useState(false);
 
 	useEffect(() => {
@@ -44,7 +50,7 @@ export function Picker({ game, participants, value, setPicked }) {
 	}, [game.bets.length]);
 
 	return (
-		<Flex>
+		<Flex direction={direction}>
 			<Menu>
 				{new Date(game.datetime) > Date.now() && (
 					<MenuButton as={Button} size="sm">
@@ -65,7 +71,7 @@ export function Picker({ game, participants, value, setPicked }) {
 					))}
 				</MenuList>
 			</Menu>
-			{game.bets && checkBet(game.bets, value)}
+			<div>{game.bets && checkBet(game.bets, value)}</div>
 		</Flex>
 	);
 }
