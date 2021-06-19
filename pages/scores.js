@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Head from "next/head";
 import {
 	Table,
 	Thead,
@@ -19,6 +20,9 @@ export default function Scores(props) {
 	const { participants } = props;
 	return (
 		<Container maxW="container.xl">
+			<Head>
+				<title>Scores</title>
+			</Head>
 			<Center>
 				<Heading as="h1" m={2}>
 					Scores
@@ -49,7 +53,9 @@ export default function Scores(props) {
 							<Td isNumeric>{participant.won}</Td>
 							<Td isNumeric>{participant.lost}</Td>
 							<Td isNumeric>{participant.played}</Td>
-							<Td isNumeric>{participant.ratio.toFixed(2)}</Td>
+							<Td isNumeric>
+								{participant.ratio.toFixed(2) * 100}%
+							</Td>
 						</Tr>
 					))}
 				</Tbody>
