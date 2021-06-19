@@ -57,7 +57,6 @@ export default function Home(props) {
 				</Link>
 			</Center>
 			<Table variant="simple">
-				<TableCaption>1er Tour</TableCaption>
 				<Thead>
 					<Tr>
 						<Th isNumeric>
