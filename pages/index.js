@@ -11,7 +11,10 @@ import {
 	Th,
 	Td,
 	TableCaption,
+	Box,
 } from "@chakra-ui/react";
+
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import Picker from "../components/picker";
 import StatusBadge from "../components/StatusBadge";
@@ -57,53 +60,62 @@ export default function Home(props) {
 				<TableCaption>1er Tour</TableCaption>
 				<Thead>
 					<Tr>
+						<Th isNumeric>
+							<ArrowBackIcon /> Gagne
+						</Th>
 						<Th>Pays</Th>
-						<Th>Statut</Th>
+						<Th textAlign="center">Nul</Th>
 						<Th isNumeric>Pays</Th>
-						<Th>G</Th>
-						<Th>Nul </Th>
-						<Th isNumeric>G</Th>
+						<Th>
+							Gagne
+							<ArrowForwardIcon />
+						</Th>
 					</Tr>
 				</Thead>
 				<Tbody>
 					{games.map((game) => (
 						<Tr key={game.id}>
-							<Td>{game.left.name}</Td>
 							<Td>
-								<StatusBadge game={game} />
+								<Box mt={12}>
+									<Picker
+										participants={participants}
+										value="Left"
+										game={game}
+										setPicked={setPicked}
+										loading={false}
+										direction="row-reverse"
+									/>
+								</Box>
 							</Td>
-							<Td isNumeric textAlign="right">
-								{game.right.name}
-							</Td>
-							<Td>
-								<Picker
-									participants={participants}
-									value="Left"
-									game={game}
-									setPicked={setPicked}
-									loading={false}
-								/>
+							<Td fontSize="xl">
+								<Box mt={12}>{game.left.name}</Box>
 							</Td>
 
 							<Td>
-								{" "}
-								<Picker
-									participants={participants}
-									value="Nil"
-									game={game}
-									setPicked={setPicked}
-									loading={false}
-								/>
+								<VStack>
+									<StatusBadge game={game} />{" "}
+									<Picker
+										participants={participants}
+										value="Nil"
+										game={game}
+										setPicked={setPicked}
+										loading={false}
+									/>
+								</VStack>
 							</Td>
-							<Td>
-								{" "}
-								<Picker
-									participants={participants}
-									value="Right"
-									game={game}
-									setPicked={setPicked}
-									loading={false}
-								/>
+							<Td isNumeric textAlign="right" fontSize="lg">
+								<Box mt={12}>{game.right.name}</Box>
+							</Td>
+							<Td isNumeric>
+								<Box mt={12}>
+									<Picker
+										participants={participants}
+										value="Right"
+										game={game}
+										setPicked={setPicked}
+										loading={false}
+									/>
+								</Box>
 							</Td>
 						</Tr>
 					))}
