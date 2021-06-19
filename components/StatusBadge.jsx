@@ -35,7 +35,7 @@ function StatusBadge(props) {
 						fontSize="lg"
 						colorScheme="green"
 						alignContent="center"
-						m={2}
+						mb={2}
 					>
 						{game.left_score} - {game.right_score}
 					</Badge>

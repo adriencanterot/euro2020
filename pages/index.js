@@ -76,7 +76,7 @@ export default function Home(props) {
 					{games.map((game) => (
 						<Tr key={game.id}>
 							<Td>
-								<Box mt={12}>
+								<Box mt={10}>
 									<Picker
 										participants={participants}
 										value="Left"
@@ -88,7 +88,7 @@ export default function Home(props) {
 								</Box>
 							</Td>
 							<Td fontSize="xl">
-								<Box mt={12}>{game.left.name}</Box>
+								<Box mt={10}>{game.left.name}</Box>
 							</Td>
 
 							<Td>
@@ -104,10 +104,10 @@ export default function Home(props) {
 								</VStack>
 							</Td>
 							<Td isNumeric textAlign="right" fontSize="lg">
-								<Box mt={12}>{game.right.name}</Box>
+								<Box mt={10}>{game.right.name}</Box>
 							</Td>
 							<Td isNumeric>
-								<Box mt={12}>
+								<Box mt={10}>
 									<Picker
 										participants={participants}
 										value="Right"
