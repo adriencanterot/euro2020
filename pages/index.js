@@ -88,7 +88,9 @@ export default function Home(props) {
 								</Box>
 							</Td>
 							<Td fontSize="xl">
-								<Box mt={10}>{game.left.name}</Box>
+								<Box fontWeight={500} mt={10}>
+									{game.left.name}
+								</Box>
 							</Td>
 
 							<Td>
@@ -104,7 +106,9 @@ export default function Home(props) {
 								</VStack>
 							</Td>
 							<Td isNumeric textAlign="right" fontSize="lg">
-								<Box mt={10}>{game.right.name}</Box>
+								<Box mt={10} fontWeight={500}>
+									{game.right.name}
+								</Box>
 							</Td>
 							<Td isNumeric>
 								<Box mt={10}>
