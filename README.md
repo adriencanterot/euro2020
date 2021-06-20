@@ -1,4 +1,4 @@
-# Euro 2020 Pronostiques entre collègues
+# Euro 2020 Pronostics
 
 Proof of Concept (< 1 Jour de code) de site de pronostique entre collègue pour l'#euro2020 utilisant :
 
@@ -11,7 +11,7 @@ Proof of Concept (< 1 Jour de code) de site de pronostique entre collègue pour 
 
 ![Screenshot of main UI](/screenshot.png?raw=true)
 
-## Getting Started
+## Démarrer
 
 Server dev
 
@@ -21,8 +21,8 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000).
 
 ## CMS
 
-Deploy a Strapi backend using the schema provided in `data.db`.
+Deploy un backend Strapi utilisant la DB `data.db` en demo.
