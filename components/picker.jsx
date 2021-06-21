@@ -47,7 +47,7 @@ export function Picker({
 
 	useEffect(() => {
 		setSpinning(false);
-	}, [game.bets.length]);
+	}, [game.bets]);
 
 	return (
 		<Flex direction={direction}>
