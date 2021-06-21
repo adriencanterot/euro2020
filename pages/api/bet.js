@@ -8,6 +8,6 @@ export default async (req, res) => {
 
 	const response = await createBet(game, participant, betStatus);
 	if (response) {
-		res.json(response.data);
+		res.json(response);
 	}
 };

@@ -29,9 +29,13 @@ export default function Home(props) {
 			participant,
 			betStatus: betStatus,
 		});
-		const { bet } = response.data.createBet;
+		console.log(response);
+		const { bet } = response.data;
+
 		const newGames = games.map((g) => {
 			if (g.id === bet.game.id) {
+				g.bets = g.bets.filter((b) => b.id != bet.id);
+
 				g.bets.push(bet);
 			}
 			return g;
@@ -133,6 +137,6 @@ import { getInitialState } from "../lib/graphql";
 export async function getServerSideProps(context) {
 	const response = await getInitialState();
 	return {
-		props: response,
+		props: response.data,
 	};
 }

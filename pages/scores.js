@@ -70,6 +70,7 @@ export async function getServerSideProps(context) {
 	const response = await getParticipants();
 
 	const { participants } = response.data;
+	console.log(participants);
 	let participantsWithScore = [];
 	for (let participant of participants) {
 		let won = 0;
@@ -98,7 +99,7 @@ export async function getServerSideProps(context) {
 				lost += 1;
 			}
 		}
-		const ratio = played !== 0 ? won / (won + lost) : 0;
+		const ratio = won + lost !== 0 ? won / (won + lost) : 0;
 
 		participantsWithScore.push({
 			won,
