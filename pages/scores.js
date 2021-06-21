@@ -39,6 +39,7 @@ export default function Scores(props) {
 			<Table variant="simple">
 				<Thead>
 					<Tr>
+						<Th isNumeric>#</Th>
 						<Th>Participant</Th>
 						<Th isNumeric>Paris Gagnés</Th>
 						<Th isNumeric>Perdus</Th>
@@ -49,6 +50,7 @@ export default function Scores(props) {
 				<Tbody>
 					{participants.map((participant, index) => (
 						<Tr bg={index === 0 ? "green.100" : ""}>
+							<Td isNumeric>#{index + 1}</Td>
 							<Td>{participant.name}</Td>
 							<Td isNumeric>{participant.won}</Td>
 							<Td isNumeric>{participant.lost}</Td>
