@@ -1,0 +1,13 @@
+query CheckBet($game: ID!, $participant: ID!) {
+	bets(where: { game: $game, participant: $participant }) {
+		id
+		betStatus
+		participant {
+			name
+			id
+		}
+		game {
+			id
+		}
+	}
+}

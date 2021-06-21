@@ -1,0 +1,16 @@
+mutation UpdateBet($bet: ID!, $betStatus: ENUM_BETS_BETSTATUS) {
+	updateBet(input: { where: { id: $bet }, data: { betStatus: $betStatus } }) {
+		bet {
+			id
+			betStatus
+			participant {
+				id
+				name
+				initials
+			}
+			game {
+				id
+			}
+		}
+	}
+}

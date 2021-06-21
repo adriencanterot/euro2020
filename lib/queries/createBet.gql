@@ -9,6 +9,7 @@ mutation AddBet($game: ID, $participant: ID, $betStatus: ENUM_BETS_BETSTATUS) {
 		}
 	) {
 		bet {
+			id
 			participant {
 				name
 				initials
