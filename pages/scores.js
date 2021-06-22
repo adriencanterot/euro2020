@@ -56,9 +56,10 @@ export default function Scores(props) {
 							<Td isNumeric>{participant.lost}</Td>
 							<Td isNumeric>{participant.played}</Td>
 							<Td isNumeric>
-								{Number.parseFloat(participant.ratio).toFixed(
-									3
-								) * 100}
+								{participant.ratio.toLocaleString("fr-FR", {
+									minimumFractionDigits: 0,
+									maximumFractionDigits: 2,
+								})}
 								%
 							</Td>
 						</Tr>
@@ -104,7 +105,7 @@ export async function getServerSideProps(context) {
 				lost += 1;
 			}
 		}
-		const ratio = won + lost !== 0 ? won / (won + lost) : 0;
+		const ratio = won + lost !== 0 ? (won / (won + lost)) * 100 : 0;
 
 		participantsWithScore.push({
 			won,
