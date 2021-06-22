@@ -56,7 +56,10 @@ export default function Scores(props) {
 							<Td isNumeric>{participant.lost}</Td>
 							<Td isNumeric>{participant.played}</Td>
 							<Td isNumeric>
-								{participant.ratio.toFixed(2) * 100}%
+								{Number.parseFloat(participant.ratio).toFixed(
+									3
+								) * 100}
+								%
 							</Td>
 						</Tr>
 					))}
