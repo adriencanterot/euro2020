@@ -58,7 +58,7 @@ export default function Scores(props) {
 							<Td isNumeric>
 								{participant.ratio.toLocaleString("fr-FR", {
 									minimumFractionDigits: 0,
-									maximumFractionDigits: 2,
+									maximumFractionDigits: 1,
 								})}
 								%
 							</Td>
