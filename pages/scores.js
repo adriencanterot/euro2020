@@ -41,6 +41,7 @@ export default function Scores(props) {
 					<Tr>
 						<Th isNumeric>#</Th>
 						<Th>Participant</Th>
+						<Th>Points</Th>
 						<Th isNumeric>Paris Gagnés</Th>
 						<Th isNumeric>Perdus</Th>
 						<Th isNumeric>Joués</Th>
@@ -52,6 +53,7 @@ export default function Scores(props) {
 						<Tr bg={index === 0 ? "green.100" : ""}>
 							<Td isNumeric>#{index + 1}</Td>
 							<Td>{participant.name}</Td>
+							<Td isNumeric>{participant.points}</Td>
 							<Td isNumeric>{participant.won}</Td>
 							<Td isNumeric>{participant.lost}</Td>
 							<Td isNumeric>{participant.played}</Td>
@@ -106,17 +108,19 @@ export async function getServerSideProps(context) {
 			}
 		}
 		const ratio = won + lost !== 0 ? (won / (won + lost)) * 100 : 0;
+		const points = lost + 3 * won;
 
 		participantsWithScore.push({
 			won,
 			lost,
 			played,
 			ratio,
+			points,
 			...participant,
 		});
 	}
 	const sortedParticipants = participantsWithScore.sort(
-		(p1, p2) => p2.ratio / p1.ratio - 1
+		(p1, p2) => p2.points - p1.points
 	);
 
 	return {
